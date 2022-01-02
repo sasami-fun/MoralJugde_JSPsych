@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>実験</title>
+    <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8">
+    <!-- jQuery の読み込み jsPsychよりも先に読み込むこと。 -->
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="jspsych-6.3.1/jspsych.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="stim_v2.js"></script>
+    <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+
+    <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+
+    <!-- カーソルを一時的に削除 -->
+    <script src="js/hide_cursor.js"></script>
+   <style>
+       ::-webkit-scrollbar {
+       display: none;
+       }
+       #jspsych-content {
+           max-width: 100%; /* this is mainly an IE 10-11 fix */
+           text-align: center;
+           margin: auto; /* this is for overflowing content */
+       }
+    </style>
+  </head>
+  <body>
+  </body>
+  <script>
+
+    var welcome = {
+      type: 'html-keyboard-response',
+      stimulus: "研究にご参加いただきありがとうございます。"+
+      "<br>実験中は，邪魔にならない様に一定時間経過するとカーソルを隠す設定にしています。"+
+      "<br>カーソルは動かすと再度表示されます。"+
+      "<br>キーボードのSを押すとフルスクリーンモードになり、実験を開始します。"+
+      "<br>よろしければSを押してください",
+      choices:['s']
+    };
+var fullscreen = {
+  type: 'fullscreen',
+  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
+  button_label: "全画面表示に切り替え",
+  fullscreen_mode: true
+};
+    var wd = window.parent.screen.width;
+    var hi = window.parent.screen.height;
+
+    var fixation = {
+        type: 'html-keyboard-response',
+        stimulus: '<div style="font-size:60px;"> + </div>',
+        choices: jsPsych.NO_KEYS,
+        stimulus_width:wd,
+        trial_duration: 2000, // [ms]
+        data: {test_part: 'fixation'}
+      }
+
+    var flip1 = {
+      type: 'html-keyboard-response',
+      stimulus: function(){
+        return `<p>${jsPsych.timelineVariable('flip1', true).toUpperCase()}</p>`
+      },
+      stimulus_width:wd,
+      choices:['ArrowDown']
+    }
+
+    var flip2 = {
+      type: 'html-keyboard-response',
+      stimulus: function(){
+        return `<p>${jsPsych.timelineVariable('flip2', true).toUpperCase()}</p>`
+      },
+      choices:['ArrowDown']
+    }
+    var flip3 = {
+      type: 'html-keyboard-response',
+      stimulus: function(){
+        return `<p>${jsPsych.timelineVariable('flip3', true).toUpperCase()}</p>`
+      },
+      choices:['ArrowDown']
+    }
+    var flip4 = {
+      type: 'html-keyboard-response',
+      stimulus: function(){
+        return `<p>${jsPsych.timelineVariable('flip4', true).toUpperCase()}</p>`
+      },
+      choices:['ArrowDown']
+    }
+    var question = {
+      type: 'html-keyboard-response',
+      stimulus: function(){
+        return `<p>${jsPsych.timelineVariable('flip5', true).toUpperCase()}</p>`
+      },
+      stimulus_width:wd,
+      choices:['ArrowLeft', 'ArrowRight']
+    }
+    var Judgement = {
+      type: 'html-keyboard-response',
+      stimulus: function(){
+        return `<p>${jsPsych.timelineVariable('flip6', true).toUpperCase()}</p>`
+      },
+      choices:['ArrowLeft', 'ArrowRight']
+    }
+    var test = {
+      timeline: [welcome,fullscreen, flip1, question],
+      timeline_variables: stim_v2,
+      randomize_order:true
+    }
+
+    var timeline = [];
+    timeline.push(test);
+    jsPsych.init({
+      timeline: timeline,
+      on_finish: function() {
+      //  jsPsych.data.displayData('csv'); //終了後CSV形式でデータを画面上に表示
+        jsPsych.data.get().localSave('csv', 'data.csv');
+      }
+    });
+  </script>
+</html>
