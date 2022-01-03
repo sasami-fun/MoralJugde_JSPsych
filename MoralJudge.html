@@ -5,13 +5,13 @@
     <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8">
     <!-- jQuery の読み込み jsPsychよりも先に読み込むこと。 -->
     <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/platform.js"></script>
     <script src="jspsych-6.3.1/jspsych.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
     <script src="stim_v2.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
-
     <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
 
     <!-- カーソルを一時的に削除 -->
@@ -30,7 +30,6 @@
   <body>
   </body>
   <script>
-
     var welcome = {
       type: 'html-keyboard-response',
       stimulus: "研究にご参加いただきありがとうございます。"+
@@ -40,12 +39,12 @@
       "<br>よろしければSを押してください",
       choices:['s']
     };
-var fullscreen = {
-  type: 'fullscreen',
-  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
-  button_label: "全画面表示に切り替え",
-  fullscreen_mode: true
-};
+    var fullscreen = {
+      type: 'fullscreen',
+      message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
+      button_label: "全画面表示に切り替え",
+      fullscreen_mode: true
+    };
     var wd = window.parent.screen.width;
     var hi = window.parent.screen.height;
 
@@ -96,7 +95,7 @@ var fullscreen = {
       stimulus_width:wd,
       choices:['ArrowLeft', 'ArrowRight']
     }
-    var Judgement = {
+    var judgement = {
       type: 'html-keyboard-response',
       stimulus: function(){
         return `<p>${jsPsych.timelineVariable('flip6', true).toUpperCase()}</p>`
@@ -104,13 +103,47 @@ var fullscreen = {
       choices:['ArrowLeft', 'ArrowRight']
     }
     var test = {
-      timeline: [welcome,fullscreen, flip1, question],
+      timeline: [fixation, flip1, flip2, flip3, flip4, question, judgement],
       timeline_variables: stim_v2,
       randomize_order:true
     }
 
+    const NotChrome = {
+        type: 'html-keyboard-response',
+        stimulus: '申し訳ありません。このブラウザでは実施できません。Chromeにて実施してください。',
+        choices: jsPsych.NO_KEYS,
+        on_finish: function (data) {
+            jsPsych.endExperiment('');
+        }
+    };
+    const NotPC = {
+        type: 'html-keyboard-response',
+        stimulus: '申し訳ありません。スマートフォンでは実施できません。パソコンにて実施してください。',
+        choices: jsPsych.NO_KEYS,
+        on_finish: function (data) {
+            jsPsych.endExperiment('');
+        }
+    };
+
     var timeline = [];
-    timeline.push(test);
+
+    var brName = platform.name.toLowerCase();
+    var osName = platform.os.toString().toLowerCase();
+    if(brName.indexOf("chrome") !== -1) {
+      if(osName.indexOf("android") !== -1 | osName.indexOf("ios") !== -1) {
+        timeline.push(NotPC);
+      }
+      else {
+        timeline.push(welcome);
+        timeline.push(fullscreen);
+        timeline.push(test);
+      }
+    }
+    else {
+      timeline.push(NotChrome);
+    }
+
+
     jsPsych.init({
       timeline: timeline,
       on_finish: function() {
