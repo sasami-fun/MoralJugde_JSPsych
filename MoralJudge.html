@@ -9,8 +9,12 @@
     <script src="jspsych-6.3.1/jspsych.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-select.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+    <!--提示刺激-->
     <script src="stim_v2.js"></script>
+    <!--同意画面-->
+    <script src="informedConsent.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
     <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
 
@@ -136,6 +140,7 @@
       else {
         timeline.push(welcome);
         timeline.push(fullscreen);
+        timeline.push(informedConsent);
         timeline.push(test);
       }
     }
