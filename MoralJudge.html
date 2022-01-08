@@ -10,10 +10,12 @@
     <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-select.js"></script>
-    <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js"></script>
     <!--提示刺激-->
     <script src="stim_v2.js"></script>
     <script src="stim_test3.js"></script>
+    <script src="trial.js"></script>
     <!--同意画面-->
     <script src="informedConsent.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
@@ -38,81 +40,35 @@
     var welcome = {
       type: 'html-keyboard-response',
       stimulus: "研究にご参加いただきありがとうございます。"+
-      "<br>実験中は，邪魔にならない様に一定時間経過するとカーソルを隠す設定にしています。"+
-      "<br>カーソルは動かすと再度表示されます。"+
-      "<br>キーボードのSを押すとフルスクリーンモードになり、実験を開始します。"+
+      // "<br>"+
+      // "<br>"+
+      // "<br>"+
       "<br>よろしければSを押してください",
       choices:['s']
     };
     var fullscreen = {
       type: 'fullscreen',
-      message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
+      message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。実験中は，邪魔にならない様に一定時間経過するとカーソルを隠す設定にしています。カーソルは動かすと再度表示されます。実験を途中で辞めたい場合はEscキーを押してください。</p>',
       button_label: "全画面表示に切り替え",
       fullscreen_mode: true
     };
-    var wd = window.parent.screen.width;
-    var hi = window.parent.screen.height;
 
-    var fixation = {
-        type: 'html-keyboard-response',
-        stimulus: '<div style="font-size:60px;"> + </div>',
-        choices: jsPsych.NO_KEYS,
-        stimulus_width:wd,
-        trial_duration: 2000, // [ms]
-        data: {test_part: 'fixation'},
-      }
+    var par_id = {
+      type: 'survey-text',
+      questions: [
+        {prompt: '参加者IDを入力してください', columns: 10, required: true, name: 'participantID'},
+        {prompt: '年齢を入力してください', columns: 3, required: true, name: 'age'},
+      ],
+      button_label: '次へ',
+    };
+    var gender = {
+      type: 'survey-multi-choice',
+      questions: [
+        {prompt: "性別を選択してください", options: ['男性', '女性'], required: false, horizontal: true, name: 'gender'},
+      ],
+      button_label: '次へ',
+    };
 
-    var flip1 = {
-      type: 'html-keyboard-response',
-      stimulus: function(){
-        return `<p>${jsPsych.timelineVariable('flip1', true).toUpperCase()}</p>`
-      },
-      stimulus_width:wd,
-      choices:['ArrowDown'],
-      data: {test_part: 'flip1'}
-    }
-
-    var flip2 = {
-      type: 'html-keyboard-response',
-      stimulus: function(){
-        return `<p>${jsPsych.timelineVariable('flip2', true).toUpperCase()}</p>`
-      },
-      choices:['ArrowDown'],
-      data: {test_part: 'flip2'}
-    }
-    var flip3 = {
-      type: 'html-keyboard-response',
-      stimulus: function(){
-        return `<p>${jsPsych.timelineVariable('flip3', true).toUpperCase()}</p>`
-      },
-      choices:['ArrowDown'],
-      data: {test_part: 'flip3'}
-    }
-    var flip4 = {
-      type: 'html-keyboard-response',
-      stimulus: function(){
-        return `<p>${jsPsych.timelineVariable('flip4', true).toUpperCase()}</p>`
-      },
-      choices:['ArrowDown'],
-      data: {test_part: 'flip4'}
-    }
-    var question = {
-      type: 'html-keyboard-response',
-      stimulus: function(){
-        return `<p>${jsPsych.timelineVariable('flip5', true).toUpperCase()}</p>`
-      },
-      stimulus_width:wd,
-      choices:['ArrowDown'],
-      data: {test_part: 'flip5'}
-    }
-    var judgement = {
-      type: 'html-keyboard-response',
-      stimulus: function(){
-        return `<p>${jsPsych.timelineVariable('flip6', true).toUpperCase()}</p>`
-      },
-      choices:['ArrowLeft', 'ArrowRight'],
-      data: {test_part: 'flip6'}
-    }
     var test = {
       timeline: [fixation, flip1, flip2, flip3, flip4, question, judgement],
       timeline_variables: stim_test3,
@@ -146,20 +102,24 @@
       }
       else {
         timeline.push(welcome);
-        timeline.push(fullscreen);
+        timeline.push(par_id);
+        timeline.push(gender);
         timeline.push(informedConsent);
+        timeline.push(fullscreen);
         timeline.push(test);
       }
     }
     else {
       timeline.push(NotChrome);
     }
-
-
+    var end_message = {
+      type: 'html-keyboard-response',
+      stimulus: '<p>以上で実験は終了です。スペースキーを押してください。Escキーでフルスクリーンモードを解除できます</p>',
+     }
+    timeline.push(end_message);
     jsPsych.init({
       timeline: timeline,
       on_finish: function() {
-      //  jsPsych.data.displayData('csv'); //終了後CSV形式でデータを画面上に表示
         jsPsych.data.get().localSave('csv', 'data.csv');
       }
     });
