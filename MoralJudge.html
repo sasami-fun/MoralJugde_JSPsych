@@ -12,6 +12,7 @@
     <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-select.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
     <!--提示刺激-->
     <script src="stim_v2.js"></script>
     <script src="stim_test3.js"></script>
@@ -23,6 +24,7 @@
 
     <!-- カーソルを一時的に削除 -->
     <script src="js/hide_cursor.js"></script>
+    <!--フルスクリーンの時にスクロールバーを隠す-->
    <style>
        ::-webkit-scrollbar {
        display: none;
@@ -81,6 +83,11 @@
       randomize_order:true
     }
 
+    var end_message = {
+      type: 'instructions',
+      pages: ['以上で実験は終了です。Escキーでフルスクリーンモードを解除したのち、このタブを閉じてください。']
+     }
+
     const NotChrome = {
         type: 'html-keyboard-response',
         stimulus: '申し訳ありません。このブラウザでは実施できません。Chromeにて実施してください。',
@@ -113,20 +120,19 @@
         timeline.push(informedConsent);
         timeline.push(fullscreen);
         timeline.push(test);
+        timeline.push(end_message);
       }
     }
     else {
       timeline.push(NotChrome);
     }
-    var end_message = {
-      type: 'html-keyboard-response',
-      stimulus: '<p>以上で実験は終了です。スペースキーを押してください。Escキーでフルスクリーンモードを解除できます</p>',
-     }
-    timeline.push(end_message);
+
     jsPsych.init({
       timeline: timeline,
       on_finish: function() {
-        jsPsych.data.get().localSave('csv', 'data.csv');
+      },
+      on_close:function() {
+        jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', 'data.csv');
       }
     });
   </script>
