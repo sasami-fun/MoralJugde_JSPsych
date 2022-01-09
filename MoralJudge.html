@@ -59,6 +59,12 @@
         {prompt: '参加者IDを入力してください', columns: 10, required: true, name: 'participantID'},
         {prompt: '年齢を入力してください', columns: 3, required: true, name: 'age'},
       ],
+      on_load: function(trial){
+         var element_id = document.getElementById('input-0')
+         var element_age = document.getElementById('input-1')
+         element_id.type = 'number'
+         element_age.type = 'number'
+      },
       button_label: '次へ',
     };
     var gender = {
