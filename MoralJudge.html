@@ -54,20 +54,31 @@
       button_label: "全画面表示に切り替え",
       fullscreen_mode: true
     };
-
+    var par_info = {};
     var par_id = {
       type: 'survey-text',
       questions: [
-        {prompt: '参加者IDを入力してください', columns: 10, required: true, name: 'participantID'},
-        {prompt: '年齢を入力してください', columns: 3, required: true, name: 'age'},
+        {prompt: '参加者IDを入力してください', columns: 3, required: true, name: 'participantID'},
       ],
+      button_label: '次へ',
       on_load: function(trial){
          var element_id = document.getElementById('input-0')
-         var element_age = document.getElementById('input-1')
-         element_id.type = 'number'
-         element_age.type = 'number'
+         element_id.type = 'number';
       },
+      on_finish: function(data){
+        par_info.id = data.response.participantID;
+      }
+    };
+    var age = {
+      type: 'survey-text',
+      questions: [
+        {prompt: '年齢を入力してください', columns: 2, required: true, name: 'age'},
+      ],
       button_label: '次へ',
+      on_load: function(trial){
+         var element_age = document.getElementById('input-1')
+         element_age.type = 'number'
+      }
     };
     var gender = {
       type: 'survey-multi-choice',
@@ -116,6 +127,7 @@
       else {
         timeline.push(welcome);
         timeline.push(par_id);
+        timeline.push(age);
         timeline.push(gender);
         timeline.push(informedConsent);
         timeline.push(fullscreen);
@@ -132,7 +144,8 @@
       on_finish: function() {
       },
       on_close:function() {
-        jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', 'data.csv');
+        jsPsych.data.addProperties(par_info);
+        jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', Object.keys(par_info[1]) + '.csv');
       }
     });
   </script>

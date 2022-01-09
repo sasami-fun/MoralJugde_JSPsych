@@ -148,26 +148,28 @@ jsPsych.plugins['survey-text'] = (function() {
     display_element.querySelector('#jspsych-survey-text-form').addEventListener('submit', function(e) {
       e.preventDefault();
       // measure response time
-      var endTime = performance.now();
-      var response_time = endTime - startTime;
+      var end_time = performance.now();
+      var response_time = end_time - start_time;
 
       // create object to hold responses
       var question_data = {};
-      
+
       for(var index=0; index < trial.questions.length; index++){
         var id = "Q" + index;
-        var q_element = document.querySelector('#jspsych-survey-text-'+index).querySelector('textarea, input'); 
+        var q_element = document.querySelector('#jspsych-survey-text-'+index).querySelector('textarea, input');
         var val = q_element.value;
         var name = q_element.attributes['data-name'].value;
         if(name == ''){
           name = id;
-        }        
+        }
         var obje = {};
         obje[name] = val;
         Object.assign(question_data, obje);
       }
       // save data
       var trialdata = {
+        presentation:start_time,
+        resp:end_time,
         rt: response_time,
         response: question_data
       };
@@ -178,7 +180,7 @@ jsPsych.plugins['survey-text'] = (function() {
       jsPsych.finishTrial(trialdata);
     });
 
-    var startTime = performance.now();
+    var start_time = performance.now();
   };
 
   return plugin;
