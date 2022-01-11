@@ -14,8 +14,14 @@
     <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
     <!--提示刺激-->
-    <script src="stim_v2.js"></script>
-    <script src="stim_test3.js"></script>
+    <script src="stimulus/stim_test3.js"></script>
+    <script src="stimulus/stimulus0.js"></script>
+    <script src="stimulus/stimulus1.js"></script>
+    <script src="stimulus/stimulus2.js"></script>
+    <script src="stimulus/stimulus3.js"></script>
+    <script src="stimulus/stimulus4.js"></script>
+    <script src="stimulus/stimulus5.js"></script>
+    <script src="stimulus/stimulus6.js"></script>
     <script src="trial.js"></script>
     <!--同意画面-->
     <script src="informedConsent.js"></script>
@@ -50,7 +56,7 @@
     };
     var fullscreen = {
       type: 'fullscreen',
-      message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。実験中は，邪魔にならない様に一定時間経過するとカーソルを隠す設定にしています。カーソルは動かすと再度表示されます。実験を途中で辞めたい場合はEscキーを押してください。</p>',
+      message: '<p class = "flip_text">以下のボタンをクリックすると，画面は全画面表示に切り替わります。実験中は，邪魔にならない様に一定時間経過するとカーソルを隠す設定にしています。カーソルは動かすと再度表示されます。実験を途中で辞めたい場合はEscキーを押してください。</p>',
       button_label: "全画面表示に切り替え",
       fullscreen_mode: true
     };
@@ -62,7 +68,7 @@
       ],
       button_label: '次へ',
       on_load: function(trial){
-         var element_id = document.getElementById('input-0')
+         var element_id = document.getElementById('input-0');
          element_id.type = 'number';
       },
       on_finish: function(data){
@@ -76,8 +82,8 @@
       ],
       button_label: '次へ',
       on_load: function(trial){
-         var element_age = document.getElementById('input-1')
-         element_age.type = 'number'
+         var element_age = document.getElementById('input-1');
+         element_age.type = 'number';
       }
     };
     var gender = {
@@ -88,15 +94,60 @@
       button_label: '次へ',
     };
 
-    var test = {
+    var pre_test = {
       timeline: [fixation, flip1, flip2, flip3, flip4, question, judgement],
       timeline_variables: stim_test3,
       randomize_order:true
     }
 
+    var instruction_main = {
+      type: 'html-keyboard-response',
+      stimulus: "それでは本番です。よろしければ[スペース]を押してください。",
+      choices:[' ']
+    }
+
+    //0 <= setSelector(int) <= 7
+    var setSelector = Math.floor(Math.random() * 8);
+    switch (setSelector) {
+      case 0:
+        var main_stim = stimulus0;
+        break;
+
+      case 1:
+        var main_stim = stimulus1;
+        break;
+
+      case 2:
+        var main_stim = stimulus2;
+        break;
+
+      case 3:
+        var main_stim = stimulus3;
+        break;
+      case 4:
+        var main_stim = stimulus4;
+        break;
+      case 5:
+        var main_stim = stimulus5;
+        break;
+      case 6:
+        var main_stim = stimulus6;
+        break;
+    }
+
+    var main_test = {
+      timeline: [fixation, flip1, flip2, flip3, flip4, question, judgement],
+      timeline_variables: main_stim,
+      randomize_order:true,
+      on_load: function(trial){
+        console.log(setSelector);
+      }
+    }
+
     var end_message = {
-      type: 'instructions',
-      pages: ['以上で実験は終了です。Escキーでフルスクリーンモードを解除したのち、このタブを閉じてください。']
+      type: 'html-keyboard-response',
+      stimulus: "スペースを押してください。実験を終了します。[Ecs]キーを押してフルスクリーンモードを解除した後、ウィンドウを閉じてください。",
+      choices:[' ']
      }
 
     const NotChrome = {
@@ -131,7 +182,9 @@
         timeline.push(gender);
         timeline.push(informedConsent);
         timeline.push(fullscreen);
-        timeline.push(test);
+        timeline.push(pre_test);
+        timeline.push(instruction_main);
+        timeline.push(main_test);
         timeline.push(end_message);
       }
     }
@@ -141,11 +194,12 @@
 
     jsPsych.init({
       timeline: timeline,
-      on_finish: function() {
+      on_finish: function(){
+        jsPsych.data.addProperties();
       },
-      on_close:function() {
+      on_close: function(){
         jsPsych.data.addProperties(par_info);
-        jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', Object.keys(par_info[1]) + '.csv');
+        jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', par_info.id + '.csv');
       }
     });
   </script>
