@@ -196,7 +196,7 @@
     jsPsych.init({
       timeline: timeline,
       on_finish: function(){
-        // jsPsych.data.addProperties();
+         jsPsych.data.addProperties(["finish"]);
       },
       on_close: function(){
         // jsPsych.data.addProperties(par_info);
