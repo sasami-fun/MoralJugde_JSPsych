@@ -1,28 +1,33 @@
+var time_date= new Date();
+var year = time_date.getFullYear();
+var month = time_date.getMonth()+1;
+var date = time_date.getDate();
+var hour = time_date.getHours();
+var minute = time_date.getMinutes();
+var second = time_date.getSeconds();
+var exp_day = year +'_'+ month +'_'+ date;
 const informedConsentText = [
-    '<div style = "font-size: 2vh; text-align: left;"><p>本実験・調査の実施責任者は○○です。本実験・調査への参加はあなたの任意によるものです。</p>' +
-    '<p><b>1.本実験・調査の目的</b>' +
-    '<br>XXXXXXXXX</p>' +
-    '<p><b>2.本実験・調査の手続き</b>' +
-    '<br>XXXXXXXXX' +
-    '<br>この実験・調査に所要時間はXXXXXXXXXです。</p>' +
-    '<p><b>3.潜在的なリスク・苦痛など</b>' +
-    '<br>XXXXXXXXX</p>' +
-    '<p><b>4.参加による利益</b>' +
-    '<br>XXXXXXXXX</p>' +
-    '<p><b>5.匿名性の確保</b>' +
-    '<br>XXXXXXXXX</p>' +
-    '<p><b>6.参加と中止</b>' +
-    '<br>XXXXXXXXX</p>' +
-    '<p><b>7.実験・調査実施者への問い合わせ</b>' +
-    '<br>XXXXXXXXX</p></div>'
+    '<div style = "font-size: 3vh; text-align: center;"><p>同意書</p></div>'+
+
+    '<span style = "font-size: 2vh; text-align: left;"><p><b>公立はこだて未来大学</b>'+
+    '<br>システム情報科学部'+
+    '<br>複雑系知能学科'+
+    '<br>実験実施者 笹森なおみ (1016178)'+
+    '<br>実験実施責任者 佐藤直行（教授）</p></span>'+
+
+    '<div style = "font-size: 2vh; text-align: left;"><p><b>1.私は、「道徳判断の認知機構の解明」（以下、本実験）の目的、研究の性質などを十分に理解し、研究目的に賛同した上で、自らの自由意思により本実験に参加します。</b>'+
+    '<p><b>2.私は、理由の如何を問わず、いつでも自らの自由意志で、本実験への参加を取りやめることができるものと理解しています。</b></p>' +
+    '<p><b>3.私は、全ての収集データが乱数に基づく上記IDにより管理され、測定データが能匿名化されることで、私の個人情報が保護されることを理解しています。</b>' +
+    '<p><b>4.私は、実験に対する苦情について、公立はこだて未来大学　企画総務課(0138-34-6448直通)において相談できることを理解しています。</b></p></div>'
 ];
+
 const informedConsent = {
     type: 'survey-multi-select',
     questions: [{
-        prompt: '<span style = "font-size: 2vh"><b>上記事項をよく読み，理解した上で実験参加に同意いただける方はチェックをお願いします。同意されない方はエスケープ（ESC）を押した後，ウィンドウを閉じてください。</b></span>',
+        prompt: '<span style = "font-size: 2vh"><b>上記事項をよく読み，理解した上で実験参加に同意いただける方はチェックをお願いします。同意されない方はエスケープ（ESC）を押した後，ウィンドウを閉じてください。</b>'+'<br>日付' + year + '年' + month + '月' + date + '日</span>',
         options: ['<span style = "font-size: 2vh">説明事項をよく読み，理解した上で，実験参加に同意します。</span>'],
         required: true,
-        name: 'approval'
+        name: ['approval', exp_day]
     }],
     preamble: informedConsentText,
     button_label: '次へ'

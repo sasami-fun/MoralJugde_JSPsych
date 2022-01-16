@@ -73,6 +73,7 @@
       },
       on_finish: function(data){
         par_info.id = data.response.participantID;
+        console.log(par_info.id);
       }
     };
     var age = {
@@ -176,15 +177,15 @@
         timeline.push(NotPC);
       }
       else {
-        timeline.push(welcome);
+        // timeline.push(welcome);
         timeline.push(par_id);
-        timeline.push(age);
-        timeline.push(gender);
+        // timeline.push(age);
+        // timeline.push(gender);
         timeline.push(informedConsent);
-        timeline.push(fullscreen);
+        // timeline.push(fullscreen);
         timeline.push(pre_test);
-        timeline.push(instruction_main);
-        timeline.push(main_test);
+        // timeline.push(instruction_main);
+        // timeline.push(main_test);
         timeline.push(end_message);
       }
     }
@@ -195,11 +196,11 @@
     jsPsych.init({
       timeline: timeline,
       on_finish: function(){
-        jsPsych.data.addProperties();
+        // jsPsych.data.addProperties();
       },
       on_close: function(){
-        jsPsych.data.addProperties(par_info);
-        jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', par_info.id + '.csv');
+        // jsPsych.data.addProperties(par_info);
+         jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', par_info.id +'_'+ exp_day +'.csv');
       }
     });
   </script>
