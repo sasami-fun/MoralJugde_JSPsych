@@ -24,7 +24,7 @@ const informedConsentText = [
 const informedConsent = {
     type: 'survey-multi-select',
     questions: [{
-        prompt: '<span style = "font-size: 2vh"><b>上記事項をよく読み，理解した上で実験参加に同意いただける方はチェックをお願いします。同意されない方はエスケープ（ESC）を押した後，ウィンドウを閉じてください。</b>'+'<br>日付' + year + '年' + month + '月' + date + '日</span>',
+        prompt: '<span style = "font-size: 2vh"><b>上記事項をよく読み，理解した上で実験参加に同意いただける方はチェックをお願いします。同意されない方は，ウィンドウを閉じて実験を中止してください。</b>'+'<br>日付' + year + '年' + month + '月' + date + '日</span>',
         options: ['<span style = "font-size: 2vh">説明事項をよく読み，理解した上で，実験参加に同意します。</span>'],
         required: true,
         name: ['approval', exp_day]
