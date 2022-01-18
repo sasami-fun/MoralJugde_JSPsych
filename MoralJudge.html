@@ -26,8 +26,9 @@
     <script src="stimulus/stimulus5.js"></script>
     <script src="stimulus/stimulus6.js"></script>
     <script src="trial.js"></script>
-    <!--同意画面-->
+    <script src="nowDate.js"></script>
     <script src="informedConsent.js"></script>
+    <script src="intro.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
     <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
 
@@ -199,11 +200,12 @@
     jsPsych.init({
       timeline: timeline,
       on_finish: function(){
-         jsPsych.data.addProperties(["finish"]);
+        jsPsych.data.addProperties(["finish"]);
       },
       on_close: function(){
-         jsPsych.data.addProperties(par_info);
-         // jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', par_info.id +'_'+ exp_day +'.csv');
+        jsPsych.data.addProperties(par_info);
+        jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', par_info.id +'_'+ exp_day_time +'.csv');
+
          // firebase.database().ref(exp_id).set({
          //   data: jsPsych.data.get().values()
          // })

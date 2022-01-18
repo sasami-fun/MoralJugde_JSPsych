@@ -1,11 +1,3 @@
-var time_date= new Date();
-var year = time_date.getFullYear();
-var month = time_date.getMonth()+1;
-var date = time_date.getDate();
-var hour = time_date.getHours();
-var minute = time_date.getMinutes();
-var second = time_date.getSeconds();
-var exp_day = year +'_'+ month +'_'+ date;
 const informedConsentText = [
     '<div style = "font-size: 3vh; text-align: center;"><p>同意書</p></div>'+
 
