@@ -1,6 +1,6 @@
 var fixation = {
     type: 'html-keyboard-response',
-    stimulus: '<div style="font-size:60px;"> + </div>',
+    stimulus: '<p class = "flip_text"> + </p></span>',
     choices: jsPsych.NO_KEYS,
     trial_duration: 1000, // [ms]
     data: {test_part: 'fixation'}
