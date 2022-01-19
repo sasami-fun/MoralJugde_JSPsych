@@ -1,6 +1,6 @@
 var fixation = {
     type: 'html-keyboard-response',
-    stimulus: '<p class = "flip_text"> + </p></span>',
+    stimulus: '<p class = "flip_text">＋</p>',
     choices: jsPsych.NO_KEYS,
     trial_duration: 1000, // [ms]
     data: {test_part: 'fixation'}
@@ -8,7 +8,7 @@ var fixation = {
 var flip1 = {
   type: 'html-keyboard-response',
   stimulus: function(){
-    return `<p class = "flip_text">${jsPsych.timelineVariable('flip1', true).toUpperCase()}</p>`
+    return `<div class = "flip_text">${jsPsych.timelineVariable('flip1', true).toUpperCase()}</div>`
   },
   choices:['ArrowDown'],
   data: {test_part: 'flip1',sinario_id: jsPsych.timelineVariable('traial_ID')}

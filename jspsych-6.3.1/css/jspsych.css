@@ -13,8 +13,6 @@
    display: flex;
    flex-direction: column;
    overflow-y: auto;
-   align-items: center;
-
  }
 
  .jspsych-display-element:focus {
@@ -22,15 +20,17 @@
  }
 
  .jspsych-content-wrapper {
-   display: flex;
-   flex: 1 1 100%;
-   width: 35%;
-   align-items: center:
+   /* display: flex;
+   flex: 1 1 100%; */
+   margin-right: 30%;
+   margin-left: 35%;
+
+   /* margin-top:; */
  }
 
  .jspsych-content {
-   max-width: 95%;
-
+   width: 100%;
+   align-items:center;
    /* margin:auto;  */
  }
 
@@ -218,9 +218,8 @@
 /*以下追加*/
 
 .flip_text{
-  width:100%;
   word-wrap: nomal;
-  margin-right: auto;
+  margin-top:70%;
 }
 .flip_firaction{
   width:100%;
@@ -228,10 +227,6 @@
   margin-right: auto;
   font-size:60px;
 }
-.center{
-  width:100%
-  margin-top: 200px;
-  margin-right: auto;
-  margin-right:auto;
-  text-align:center;
+.top0{
+  margin-top:40%;
 }
