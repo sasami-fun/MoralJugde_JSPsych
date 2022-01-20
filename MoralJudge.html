@@ -5,9 +5,9 @@
     <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8">
     <!-- jQuery の読み込み jsPsychよりも先に読み込むこと。 -->
     <script src="js/jquery-3.5.1.min.js"></script>
-    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script> -->
-    <!-- <script type="module" src = "index.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script type="module" src = "index.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
     <script src="js/platform.js"></script>
     <script src="jspsych-6.3.1/jspsych.js"></script>
@@ -57,8 +57,8 @@
       timeline_variables: stim_test3,
       randomize_order:true
     }
-    //0 <= setSelector(int) <= 7
-    var setSelector = Math.floor(Math.random() * 8);
+    //0 <= setSelector(int) <= 6
+    var setSelector = Math.floor(Math.random() * 7);
     switch (setSelector) {
       case 0:
         var main_stim = stimulus0;
@@ -143,14 +143,16 @@
       timeline: timeline,
       on_finish: function(){
         jsPsych.data.addProperties(["finish"]);
+        jsPsych.data.addProperties(par_info);
+        firebase.database().ref(exp_day_time+'_'+par_info.id).set({
+          data: jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').ignore('trial_type').values()
+        })
       },
       on_close: function(){
-        jsPsych.data.addProperties(par_info);
-        jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', par_info.id +'_'+ exp_day_time +'.csv');
-
-         // firebase.database().ref(exp_id).set({
-         //   data: jsPsych.data.get().values()
-         // })
+        // jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').localSave('csv', par_info.id +'_'+ exp_day_time +'.csv');
+        firebase.database().ref(exp_day_time+'_'+par_info.id).set({
+          data: jsPsych.data.get().ignore('trial_index').ignore('time_elapsed').ignore('question_order').ignore('internal_node_id').ignore('view_history').ignore('success').ignore('trial_type').values()
+        })
       }
     });
   </script>
